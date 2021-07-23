@@ -7,7 +7,7 @@ class GridPaint:
         self.HEIGHT = 600
         self.WIDTH = 800
         self.window = Tk()
-        self.window.title('Shape Grid')
+        self.window.title('Grid Paint')
         f = Frame(self.window, width=self.WIDTH, height=50, bg='white')
         self.c = Canvas(self.window, width=self.WIDTH, height=self.HEIGHT, bg='black')
 
