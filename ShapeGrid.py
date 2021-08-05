@@ -1,4 +1,5 @@
 from tkinter import *
+import json
 
 
 class GridPaint:
@@ -13,7 +14,8 @@ class GridPaint:
 
         self.pen_colour = 'black'
 
-        self.sqr_id = list()
+        self.sqr_id = ()
+        self.state = {}
 
         # Binds the mouse buttons to the correct functions
         self.c.bind_all('<Button-1>', self.colour)
@@ -21,6 +23,12 @@ class GridPaint:
 
         # Runs the selected function to create the grid
         self.create_grid()
+
+        btn_save = Button(f, text="Save", command=self.save)
+        btn_save.pack(side=LEFT)
+
+        btn_load = Button(f, text="Load", command=self.load)
+        btn_load.pack(side=LEFT)
 
         # Buttons to select the colour of the Pen
         button_black = Button(f, text='Black', command=lambda: self.change_clr("black"), bg='black', fg='white')
@@ -39,7 +47,7 @@ class GridPaint:
         button_green.pack(side=LEFT)
 
         # Buttons to clear the grid and to exit the program
-        button_clear = Button(f, text='Clear!', command=self.create_grid)
+        button_clear = Button(f, text='Clear!', command=self.clear)
         button_clear.pack(side=LEFT)
 
         button_exit = Button(f, text='X', command=self.close, bg="red")
@@ -60,16 +68,24 @@ class GridPaint:
             x1 = 0
             while x1 < self.WIDTH:
                 id1 = self.c.create_rectangle(x1, y1, x1 + size, y1 + size, outline='#ccc', fill="white")
+                self.state[id1] = "white"
                 x1 += 20
                 row.append(id1)
 
             self.sqr_id.append(row)
             y1 += 20
 
+    def clear(self):
+        for row in self.sqr_id:
+            for square in row:
+                CURRENT = self.c.find_withtag(square)
+                self.c.itemconfig(CURRENT, fill="white")
+
     # Function to fill the selected square
     def colour(self, event):
         if self.c.find_withtag(CURRENT):
             self.c.itemconfig(CURRENT, fill=self.pen_colour)
+            self.state[CURRENT] = self.pen_colour
             self.c.update_idletasks()
 
     # Function to erase the selected square
@@ -83,6 +99,19 @@ class GridPaint:
 
     def change_clr(self, clr):
         self.pen_colour = clr
+
+    def save(self):
+        with open("board-state.json", 'w') as FILE:
+            json.dump(self.state, FILE)
+
+    def load(self):
+        with open("board-state.json", "r") as FILE:
+            self.state = json.load(FILE)
+
+        for row in self.sqr_id:
+            for square in row:
+                current = self.c.find_withtag(square)
+                self.c.itemconfig(current, fill=self.state[str(square)])
 
 
 if __name__ == "__main__":
