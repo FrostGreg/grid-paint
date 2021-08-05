@@ -12,7 +12,7 @@ class GridPaint:
         self.WIDTH = 800
         self.window = tk.Tk()
         self.window.title('Grid Paint')
-        f = tk.Frame(self.window, width=self.WIDTH, height=50, bg='white')
+        f = tk.Frame(self.window, width=self.WIDTH, height=50)
         self.c = tk.Canvas(self.window, width=self.WIDTH, height=self.HEIGHT, bg='white')
 
         self.pen_colour = 'black'
@@ -49,31 +49,31 @@ class GridPaint:
         self.create_grid()
 
         # Buttons to select the colour of the Pen
-        button_black = tk.Button(f, text='Black', command=lambda: self.change_clr("black"), bg='black', fg='white')
-        button_black.pack(side=tk.LEFT)
+        button_black = tk.Button(f, width=7, text='Black', command=lambda: self.change_clr("black"), bg='black', fg='white')
+        button_black.grid(row=1, column=0)
 
-        button_red = tk.Button(f, text='Red', command=lambda: self.change_clr("red"), bg='red', fg='white')
-        button_red.pack(side=tk.LEFT)
+        button_red = tk.Button(f, width=7, text='Red', command=lambda: self.change_clr("red"), bg='red', fg='white')
+        button_red.grid(row=2, column=0)
 
-        button_yellow = tk.Button(f, text='Yellow', command=lambda: self.change_clr("yellow"), bg='yellow')
-        button_yellow.pack(side=tk.LEFT)
+        button_yellow = tk.Button(f, width=7, text='Yellow', command=lambda: self.change_clr("yellow"), bg='yellow')
+        button_yellow.grid(row=3, column=0)
 
-        button_blue = tk.Button(f, text='Blue', command=lambda: self.change_clr("blue"), bg='blue', fg='white')
-        button_blue.pack(side=tk.LEFT)
+        button_blue = tk.Button(f, width=7, text='Blue', command=lambda: self.change_clr("blue"), bg='blue', fg='white')
+        button_blue.grid(row=4, column=0)
 
-        button_green = tk.Button(f, text='Green', command=lambda: self.change_clr("#0f0"), bg='#0f0')
-        button_green.pack(side=tk.LEFT)
+        button_green = tk.Button(f, width=7, text='Green', command=lambda: self.change_clr("#0f0"), bg='#0f0')
+        button_green.grid(row=5, column=0)
 
         # Buttons to clear the grid and to exit the program
-        button_clear = tk.Button(f, text='Clear!', command=self.clear)
-        button_clear.pack(side=tk.LEFT)
+        button_clear = tk.Button(f, width=7, text='Clear!', command=self.clear)
+        button_clear.grid(row=6, column=0)
 
         self.current_clr = tk.Label(f, text="Current", bg=self.pen_colour, fg=self.pen_colour)
-        self.current_clr.pack(side=tk.LEFT)
+        self.current_clr.grid(row=0, column=0, columnspan=2, pady=(0, 100))
 
         # closes the canvas
-        f.pack()
-        self.c.pack()
+        f.grid(row=0, column=0)
+        self.c.grid(row=0, column=2)
 
         self.window.mainloop()
 
