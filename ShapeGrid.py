@@ -83,9 +83,10 @@ class GridPaint:
 
     # Function to fill the selected square
     def colour(self, event):
-        if self.c.find_withtag(CURRENT):
+        found = self.c.find_withtag(CURRENT)
+        if found:
             self.c.itemconfig(CURRENT, fill=self.pen_colour)
-            self.state[CURRENT] = self.pen_colour
+            self.state[found[0]] = self.pen_colour
             self.c.update_idletasks()
 
     # Function to erase the selected square
