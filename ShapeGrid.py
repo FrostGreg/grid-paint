@@ -21,8 +21,8 @@ class GridPaint:
         self.board_state = {}
 
         # Binds the mouse buttons to the correct functions
-        self.c.bind_all('<Button-1>', self.colour)
-        self.c.bind_all('<Button-3>', self.erase)
+        self.c.bind_all('<Button-1>', lambda event: self.colour(self.pen_colour, event))
+        self.c.bind_all('<Button-3>', lambda event: self.colour("white", event))
 
         menu_bar = tk.Menu(self.window)
         file_menu = tk.Menu(menu_bar, tearoff=0)
@@ -100,17 +100,11 @@ class GridPaint:
                 self.c.itemconfig(CURRENT, fill="white")
 
     # Function to fill the selected square
-    def colour(self, event):
+    def colour(self, clr, event):
         found = self.c.find_withtag(tk.CURRENT)
         if found:
-            self.c.itemconfig(tk.CURRENT, fill=self.pen_colour)
-            self.board_state[found[0]] = self.pen_colour
-            self.c.update_idletasks()
-
-    # Function to erase the selected square
-    def erase(self, event):
-        if self.c.find_withtag(tk.CURRENT):
-            self.c.itemconfig(tk.CURRENT, fill='white')
+            self.c.itemconfig(tk.CURRENT, fill=clr)
+            self.board_state[found[0]] = clr
             self.c.update_idletasks()
 
     def close(self):
