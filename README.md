@@ -15,6 +15,6 @@ It's as simple as that
 
 ## Screenshots
 
-![Image of the program](docs/assets/home.PNG)
+![Image of the program](docs/assets/welcome.PNG)
 
 ![Image of an untouched canvas](docs/assets/file.PNG)
