@@ -13,7 +13,7 @@ class GridPaint:
         self.window = tk.Tk()
         self.window.title('Grid Paint')
         f = tk.Frame(self.window, width=self.WIDTH, height=50, bg='white')
-        self.c = tk.Canvas(self.window, width=self.WIDTH, height=self.HEIGHT, bg='black')
+        self.c = tk.Canvas(self.window, width=self.WIDTH, height=self.HEIGHT, bg='white')
 
         self.pen_colour = 'black'
 
@@ -24,14 +24,29 @@ class GridPaint:
         self.c.bind_all('<Button-1>', self.colour)
         self.c.bind_all('<Button-3>', self.erase)
 
+        menu_bar = tk.Menu(self.window)
+        file_menu = tk.Menu(menu_bar, tearoff=0)
+        file_menu.add_command(label="Save As", command=self.save)
+        file_menu.add_command(label="Load", command=self.load)
+        file_menu.add_command(label="Close", command=self.close)
+        menu_bar.add_cascade(label="File", menu=file_menu)
+
+        colour_menu = tk.Menu(menu_bar, tearoff=0)
+        colour_menu.add_command(label="Black", command=lambda: self.change_clr("black"))
+        colour_menu.add_command(label="Red", command=lambda: self.change_clr("red"))
+        colour_menu.add_command(label="Yellow", command=lambda: self.change_clr("yellow"))
+        colour_menu.add_command(label="Blue", command=lambda: self.change_clr("blue"))
+        colour_menu.add_command(label="Green", command=lambda: self.change_clr("#0f0"))
+        menu_bar.add_cascade(label="Colours", menu=colour_menu)
+
+        format_menu = tk.Menu(menu_bar, tearoff=0)
+        format_menu.add_command(label="Clear", command=self.clear)
+        menu_bar.add_cascade(label="Format", menu=format_menu)
+
+        self.window.config(menu=menu_bar)
+
         # Runs the selected function to create the grid
         self.create_grid()
-
-        btn_save = tk.Button(f, text="Save", command=self.save)
-        btn_save.pack(side=tk.LEFT)
-
-        btn_load = tk.Button(f, text="Load", command=self.load)
-        btn_load.pack(side=tk.LEFT)
 
         # Buttons to select the colour of the Pen
         button_black = tk.Button(f, text='Black', command=lambda: self.change_clr("black"), bg='black', fg='white')
@@ -53,8 +68,8 @@ class GridPaint:
         button_clear = tk.Button(f, text='Clear!', command=self.clear)
         button_clear.pack(side=tk.LEFT)
 
-        button_exit = tk.Button(f, text='X', command=self.close, bg="red")
-        button_exit.pack(side=tk.LEFT)
+        self.current_clr = tk.Label(f, text="Current", bg=self.pen_colour, fg=self.pen_colour)
+        self.current_clr.pack(side=tk.LEFT)
 
         # closes the canvas
         f.pack()
@@ -103,6 +118,7 @@ class GridPaint:
 
     def change_clr(self, clr):
         self.pen_colour = clr
+        self.current_clr.configure(bg=clr, fg=clr)
 
     def save(self):
         file = filedialog.asksaveasfile(mode="w", initialdir=self.DIR,
